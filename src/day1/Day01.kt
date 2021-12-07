@@ -1,4 +1,4 @@
-package day1;
+package day1
 
 import readInput
 
@@ -13,7 +13,7 @@ fun main() {
         if (prevNumber < currentNumber) {
             numberIncreased++
         }
-        prevNumber = currentNumber;
+        prevNumber = currentNumber
     }
 
     println("increased $numberIncreased times")
