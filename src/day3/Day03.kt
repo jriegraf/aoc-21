@@ -3,6 +3,11 @@ package day3
 import day3.Rating.*
 import readInput
 
+private const val ZERO = '0'
+private const val ONE = '1'
+
+enum class Rating { OxygenGenerator, CO2Scrubber }
+
 fun main() {
     val numbers = readInput("day3/input.txt")
     println("power consumption: " + part1(numbers))
@@ -20,20 +25,17 @@ fun part2(numbers: List<String>): Int {
 }
 
 fun getGamma(numbers: List<String>, n: Int): Char =
-    if (numbers.map { s -> s[n] }.count { x -> x == '0' } > numbers.size / 2) '0' else '1'
+    if (numbers.map { s -> s[n] }.count { x -> x == ZERO } > numbers.size / 2) ZERO else ONE
 
 fun getRating(r: Rating, numbers: List<String>): String {
     val nums = numbers.toMutableList()
     for (n in 0 until nums.size) {
-        val gamma = getGamma(nums, n)
-        nums.removeIf { x -> (x[n] == gamma) == (r == CO2Scrubber) }
-        if (nums.size == 1) return nums[0]
+        nums.removeIf { x -> (x[n] == getGamma(nums, n)) == (r == CO2Scrubber) }
+        if (nums.size == 1) break
     }
     return nums[0]
 }
 
-fun invert(s: String): String = s.replace('0', 'X').replace('1', '0').replace('X', '1')
+fun invert(s: String): String = s.map { n -> if (n == ZERO) ONE else ZERO }.joinToString(separator = "")
 
 fun toInt(s: String): Int = s.toInt(2)
-
-enum class Rating { OxygenGenerator, CO2Scrubber }
